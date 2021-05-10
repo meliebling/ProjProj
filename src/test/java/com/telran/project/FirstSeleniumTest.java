@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class FirstSeleniumTest {
     WebDriver wd;
@@ -17,22 +18,23 @@ public class FirstSeleniumTest {
     @BeforeMethod
     public void setUp(){
         wd = new ChromeDriver();
-        wd.get("https://www.google.com/");
+        wd.manage().window().maximize();
+        wd.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS);
+        wd.navigate().to("https://www.gov.il/");
 
 
     }
     @Test
-    public void openGoogleTest(){
-        System.out.println("Site opened");
-        wd.findElement(By.name("q")).click();
-        wd.findElement(By.name("q")).sendKeys("Selenium"+ Keys.ENTER);
-        String text = wd.findElement(By.tagName("h3")).getText();
-        Assert.assertEquals(text.toLowerCase(),"selenium");
+    public void searchOnNavMenu(){
+        wd.findElement(By.cssSelector("#tm-4")).click();
+
+        String pageTitle = wd.findElement(By.cssSelector("h1 span")).getText();
+        System.out.println(pageTitle);
 
 
     }
 
-    @AfterMethod
+    @AfterMethod(enabled = false)
     public void tearDown(){
 wd.quit();
     }
